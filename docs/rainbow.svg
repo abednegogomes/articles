@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="400" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<radialGradient id="a" cx="266.44" cy="172.09" r="156.39" gradientTransform="matrix(.99886 0 0 .99886 .3028 .19557)" gradientUnits="userSpaceOnUse">
+			<stop stop-color="#afe1e0" offset="0"/>
+			<stop stop-color="#afc8e0" offset=".92513"/>
+			<stop stop-color="#afaec7" offset="1"/>
+		</radialGradient>
+		<filter id="c" x="-.014329" y="-.010665" width="1.0287" height="1.0213" color-interpolation-filters="sRGB">
+			<feGaussianBlur stdDeviation="0.39016887"/>
+		</filter>
+		<filter id="b" x="-.0021633" y="-.018298" width="1.0043" height="1.0366" color-interpolation-filters="sRGB">
+			<feGaussianBlur stdDeviation="0.3657249"/>
+		</filter>
+	</defs>
+	<rect width="600" height="400" rx="0" ry="0" fill="#dbdad8"/>
+	<path d="m382.96 156.05-148.65 168.9-91.617 75.047h5.8497l89.285-74.413z" fill="#800080"/>
+	<path d="m146.08 73.43 261.84 46.851-24.701 35.458-145.39 169.84-89.285 74.419h5.8497l87.427-73.799 171.24-206.44-1.7474-4.5336-263.31-44.189-148.01 0.035v2.3773l146.09-0.0196z" fill="#00f"/>
+	<path d="m383.22 155.74-141.39 170.46-87.427 73.802h5.8497l85.75-73.267z" fill="#00928c"/>
+	<path d="m383.22 155.74-137.23 170.99-85.75 73.267h5.8497l84.309-72.826z" fill="#0f0"/>
+	<path d="m383.22 155.74-132.81 171.43-84.309 72.823h5.8497l82.79-72.512z" fill="#ff0"/>
+	<path d="m382.96 156.05-128.23 171.44-82.79 72.507h5.8497l81.365-72.313z" fill="#f60"/>
+	<path d="m148 71.04 257.75 44.95-22.531 39.749-124.06 171.95-81.365 72.312h5.8497l80.241-72.241 147.43-212.52-1.6598-4.1689-259.5-42.399-150.16 0.0403v2.362l148-0.02322z" fill="#f00"/>
+	<path d="m492.54 121.94c-15.444-13.288-23.175-33.448-20.576-53.655" fill="none" stroke="#000" stroke-dashoffset="21.5" stroke-linecap="round" stroke-width="2"/>
+	<path d="m-2.32 66.969v8.2031l146.91-0.022007 261.16 40.84-254.19-49.011z" fill="#fff" filter="url(#b)"/>
+	<path d="m345.96 203.03 15.006-13.307 24.985-31.937 25.359-42.561-30.72 38.369-24.985 31.937z" fill="#fff" filter="url(#c)" stroke-width="1.5"/>
+	<circle cx="266.44" cy="172.09" r="155.71" fill="url(#a)" opacity=".5" stroke="#b4b8d0" stroke-width="2"/>
+	<text x="480" y="100" font-family="'DejaVu Serif'" font-size="27px" font-style="italic">42°</text>
+	<path d="m150.12 68.668 402.28-2e-6 -288.48 259.06" fill="none" stroke="#000" stroke-dasharray="6, 6" stroke-linecap="round" stroke-width="2"/>
+	<rect x="6.5476" y="73.428" width="139.5" height="0" rx="0" ry="0" fill="none" stroke="#000" stroke-dashoffset="21.5" stroke-linecap="round"/>
+</svg>
