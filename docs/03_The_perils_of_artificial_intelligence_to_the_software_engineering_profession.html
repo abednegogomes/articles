@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>The perils of "AI" to the software engineering profession</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                font-family: "Georgia", serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 40px 20px;
+                background-color: #fdfdfd;
+            }
+            h1, h2, h3, h4, h5 {
+                font-family: "Helvetica", "Arial", sans-serif;
+                color: #1a1a1a;
+            }
+            h1 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 0.5rem; }
+            h3 { color: #444; }
+            h5 { text-transform: uppercase; letter-spacing: 2px; color: #777; margin-bottom: 0.5rem; }
+            
+            a {
+                color: #4597e9;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            
+            .quote {
+                font-style: italic;
+                font-weight: bold;
+                border-left: 4px solid #ccc;
+                padding-left: 20px;
+                margin: 30px 0;
+                color: #555;
+            }
+
+            .verse {
+                font-style: normal;
+                font-weight: normal;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 30px 0;
+                font-family: sans-serif;
+                font-size: 0.9rem;
+            }
+            th, td {
+                text-align: left;
+                padding: 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            th { background-color: #f2f2f2; }
+
+            hr { border: 0; border-top: 1px solid #eee; margin: 40px 0; }
+
+            .center {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 class="center">
+            The perils of "AI" to the<br>
+            software engineering profession
+        </h1>
+
+        <br>
+        <br>
+
+        <h2>Trusting artificial intelligence</h2>
+        <p>As of 2026, using the best and latest large language models (LLMs), this "AI" generated code can be up to 20% inaccurate, with hallucination rates of up to 22% and up to 45% of the code contains vulnerabilities listed in the OWASP Top 10.</p>
+        <h3>So <i>why</i> as professional developers, are we allowing AI to write large amounts of code itself without proper human code review, human testing or human correction?</h3>
+
+        <br>
+
+        <h2>Some rhetorical questions</h2>
+
+        <p>There is a trend spreading through software development circles that has acquired a deceptively casual name: vibe coding. The practice is exactly what it sounds like. A developer describes what they want in plain English, an AI generates the code, and the developer ships it, often without reading it carefully, without testing it properly, and sometimes without understanding it at all. The "vibe" is right. The tests pass. It goes live.</p>
+
+        <p>For a marketing website or a to-do app, this is merely sloppy. For safety-critical systems, it is a category of recklessness we do not yet have adequate language to describe.</p>
+
+        <ul>
+            <li>Should we vibe code nuclear command and control infrastructure?</li>
+            <li>Should we vibe code a nuclear power plant's control software?</li>
+            <li>Should we vibe code flight control software for a 737?</li>
+            <li>Should we vibe code a car's full self driving software?</li>
+            <li>Should we vibe code end-to-end encryption software or services?</li>
+            <li>Should we vibe code the Linux kernel and do a full rewrite?</li>
+            <li>Should we vibe code an online banking system or cryptocurrency exchange?</li>
+            <li>Should we vibe code a web service login system?</li>
+        </ul>
+        <p>
+            If your answer is <i>yes</i> to any of the above questions, please <b>get out</b> of the software engineering profession. Go be a project manager, a UI/UX designer, or make marketing websites, or games, or something <i>unimportant</i>. And don't publish your slop anywhere public, otherwise these LLMs will learn from the slop and get progressively worse over time.
+        </p>
+
+
+        <h2>When the Hammer Builds the Cockpit</h2>
+
+        <p>Consider the aircraft. Modern commercial aviation is one of humanity's greatest engineering achievements. Not because the technology is infallible, but because the culture surrounding it is obsessive about failure. Every line of flight control software is reviewed, tested, audited, and certified to standards that take years to satisfy. Every failure mode is modelled. Every edge case is hunted down. The reason you are statistically safer in an aircraft than in a car is not the hardware, it is the discipline of the humans who built and verified the software that runs it.</p>
+
+        <p>Now imagine that discipline replaced with a prompt. "Write me the flight control logic for a fly-by-wire system." The AI obliges. It produces code that looks correct, compiles cleanly, and passes basic tests. The developer, perhaps under deadline pressure, perhaps simply trusting the output the way a generation has been trained to trust Google, ships it. The aircraft takes off. At 37,000 feet (11 km) altitude, in conditions the AI's training data never quite captured, an edge case nobody thought to test for produces a response the MCAS system was never designed to handle and the plane forcibly nosedives to the ground, resisting pilot attempts to override it.</p>
+
+        <p>This is not a thought experiment designed to terrify. It is the logical consequence of normalising the idea that you do not need to understand the code you deploy, that the AI's confidence is a substitute for your comprehension. Aviation is the sharpest example, but the same logic applies to medical device firmware, nuclear plant monitoring systems, autonomous vehicle decision trees, and the infrastructure that keeps power grids and water treatment facilities running. These are not domains where "move fast and break things" is a philosophy. They are domains where breaking things means people die.</p>
+
+        <p>The seductive danger of AI-generated code is not that it is always wrong. It is that it is usually right, right enough, often enough, that the habit of verification quietly atrophies. Engineers stop asking why the code works. They stop building the mental model that would allow them to recognise when it doesn't. And when the edge case arrives, as edge cases always do, there is no human in the loop who understands the system well enough to catch it before it becomes a catastrophe.</p>
+
+        <p>A hammer used correctly builds a house. A hammer used carelessly breaks fingers. A hammer handed to someone who has never learned carpentry and told to build a load-bearing wall does not just break fingers. It brings the ceiling down on everyone inside.</p>
+
+
+        <h2>The Button Nobody Should Ever Vibe Code</h2>
+
+        <p>If the aircraft scenario unsettles you, consider the logical extreme of the same failure mode, and then consider that it is not entirely hypothetical.</p>
+
+        <p>The United States nuclear command and control infrastructure is one of the most consequential software systems ever built. It exists to do two things with absolute reliability: prevent a nuclear launch from happening by accident, and ensure one can happen by intent when authorised through a precise, multi-human chain of command. Decades of protocol, engineering, and institutional paranoia have been poured into making that system as close to failure-proof as anything humans have ever constructed. The famous "two-man rule", requiring two independent actors to authorise any launch, exists precisely because the designers understood that no single human, and certainly no single machine, should hold that decision alone.</p>
+
+        <p>Now run the vibe coding logic through that system.</p>
+
+        <p>Imagine a contractor, under budget pressure and schedule pressure, tasked with modernising a component of the early warning infrastructure. The existing codebase is legacy, decades old, arcane, poorly documented. It would take months to understand it properly. An AI can rewrite it in an afternoon. The new code is cleaner. It passes the test suite. It integrates with the existing architecture. The vibe is right. It ships. The cold war was survived not because the weapons were safe, but because the humans controlling them had enough judgment, enough doubt, and enough fear to hesitate. Remove the human. Remove the hesitation. Remove the doubt. What remains is a system that cannot afford to be wrong, operated by code that nobody fully understands.</p>
+
+        <p>Somewhere in that rewritten code is an edge case. Perhaps it misinterprets a radar signature, (a flock of geese, a satellite decay, an atmospheric anomaly), as an inbound ballistic missile. Perhaps it mishandles a network timeout in a way the original engineers deliberately designed to fail safe, but the AI, lacking that institutional memory, designed to fail fast. Perhaps it simply interprets an ambiguous sensor reading with a confidence it was never entitled to have.</p>
+
+        <p>Without a human in the loop who understands what the system is doing and why, there is no one to say: <b>wait</b>. There is no Stanislav Petrov, the Soviet officer who in 1983 correctly judged that his early warning system's alert of an American first strike was a malfunction, and chose not to report it up the chain, a decision that may well have prevented nuclear war. Petrov's intervention was not algorithmic. It was human judgment operating against the grain of the system he was supposed to trust, because he understood the system well enough to know it was wrong.</p>
+
+        <p>An AI has no instinct for that kind of doubt. It does not get a bad feeling. It does not pause because something seems off. It executes the logic it was given, at machine speed, with complete confidence, even when the logic is catastrophically incorrect. And if the humans who built that logic did not understand it well enough to find the flaw, there is no one left to catch it before the consequence is irreversible.</p>
+
+        <p>This is an argument that the vibe coding culture (the casual, unverified, move-fast deployment of AI-generated code) is existentially incompatible with systems where the cost of a single edge case is measured in cities. The same instinct that leads a developer to ship unread code for a marketing website does not magically become rigorous when the stakes get higher. Culture does not switch off at the door of the server room. It follows the engineers inside.
+
+
+        <h2>Running lots of agents doesn't make the problem go away</h2>
+
+        <p>The non-deterministic nature of AI models is a major driver of compounding errors in agent workflows. In traditional software, the same input always produces the same output, but AI agents are probabilistic; even with identical inputs, they may follow different reasoning paths or produce subtly different responses each time.</p>
+
+        <p>In a multi-step chain, your total success is the product of every individual step's success. If an agent has a 90% accuracy rate for each step, a 10-step process will only succeed about 35% of the time.</p>
+
+        <p>Because agents are non-deterministic, a minor deviation in step one (such as a slightly malformed tool response or a "hallucinated" parameter) can lead the agent down an entirely wrong reasoning path in step two.</p>
+            
+        <p>Unlike standard code that "breaks" with a clear error message, non-deterministic agents often provide factually wrong answers with high confidence. This makes it difficult to catch an error early before it corrupts the rest of the workflow.</p>
+
+        <p>So employing a vibe coding agent, then a code review agent, then a code testing agent in your pipeline isn't a magical replacement for a proper senior developer (human in the loop) who would have (correctly) reviewed, tested and iterated on the code a few times before committing that working code and pushing it into production.</p>
+
+
+        <h2>And then there's this guy</h2>
+        <img src="1-million-lines-of-code-per-month.png" width="494" height="291"><br>
+
+        <p>I wonder, if they write even 10,000 lines of code per month, let alone 1 million per month, who <i>really</i> understands the code base anymore? I'm trying to work out how many vulnerabilities are likely to be in that, which get compounded every month. I have another rhetorical question:</p>
+
+        <h3>Have you sold your Microslop stocks yet?</h3>
+        <p>OK, this time, a hypothetical question, what if this guy gets a job at United States Strategic Command (USSTRATCOM) and rewrites the nuclear command and control infrastructure using this strategy?</p>
+
+        <h3>2030: thanks, Galen</h3>
+        <img src="terminator-3.jpg" width="640" height="264">
+
+        <p>If you believe in GOD, pray that this guy stays at Microslop. And that USSTRATCOM does not use Windows... In the meantime, it may just be <i>Year of the Linux Desktop</i>, for real this time. And just in case, have you bought and installed your nuclear bunker yet? Just USD $20,000 for basic entry-level shelters...</p>
+
+        
+        <h2>But seriously...</h2>
+
+        <p>Stop vibe coding anything serious. If you do it, you're embarrassing our profession. You're calling our entire profession into disrepute. Some day your laziness is going to cause some massive: disaster, cyber attack, loss of money or system wide crash with far reaching consequences. And nobody will be able to quickly understand or debug the vibe coded slop to fix it.</p>
+        
+        <p>If you must use an AI to do something, be an actual developer and do it in small commit size chunks, like a bug fix. Here is the standard you should follow:</p>
+
+        <ol>
+            <li>Prompt the LLM to analyse an issue (or do some small refactor), but give it enough context (by adding in the relevant files to the prompt)</li>
+            <li><i>Carefully</i> review the code it suggests, don't blindly accept its advice, <b>verify</b>. Manual web search if needs be.</li>
+            <li>Actually test the changes.</li>
+            <li>Now commit your code.</li>
+            <li>After you have a feature ready or some chunk of code ready for production, (optionally) get an LLM to run some code analysis on it and maybe it could have some suggestions that you can manually add to your pull request.</li>
+            <li>Get your pull request <i>peer reviewed</i> by an experienced <b>senior</b> developer (with security experience).</li>
+            <li>Fix anything, re-test, re-review and <i>now</i> you can deploy.</li>
+        </ol>
+
+        <p>This way you will pick up issues <i>before</i> they become production disasters.</p>
+
+        <p>But actually, from my 20 years of experience, using AI even short term, your developer skills actually start to atrophy. It makes you lazy and dumber. You forget things. You become sluggish. I had some fun trying Gemini for a week to do bite sized, commit by commit improvements, reviewing each change and testing them, on a medium size React single page app I was developing for a company. To be fair I got a lot done in hyper-speed that week. But the next week I thought, hang on, what if the AI is unavailable and I have to do things manually again? I thought, let me try debug and fix some issue like the good ol' days. I used to be a good React developer. So I dedicated a day to doing things manually, no AI allowed. I had a bug on line 20,234 or something and a nonsense stack trace in the web browser. My brain was fried from the previous week of hyper-speed vibe coding, reviewing and testing. So, how do I debug this nonsense, the code line is not matching up to any of my files. OK, I could search some keywords of the error to try scan my code for the error, but it took me the whole day to fix it. I was missing a full stop somewhere. Embarrassing. I was lost in the layers of the React code slop.</p>
+
+        <p>This is a real danger for developers. Using AI too much causes you to forget how to debug and write things manually. We start losing our trade craft. We <b>must</b> remember and still do things manually on occassion.</p>
+
+
+        <h2>To the AI tech bros, hype promoters and CEOs</h2>
+
+        <p>Lets be honest, LLMs and AI are not real Artificial General Intelligence (AGI), it's just a machine trained on varying data. It can be up to 70% innaccurate at times. It's a tool that can augment real developers and speed them up. But someone should still be checking, verifying and testing the work done by it. Patch by patch, commit by commit. Not letting it write whole projects by itself from a prompt (vibe coding), because that will be insecure, a whole lot of tech debt which no-one understands and probably miss important edge cases. You can't just let your development team go. Engineering still needs to happen.</p>
+
+        <p>But the marketing hype has given CEOs, CTOs, CFOs, managers etc a false sense of security that they can get rid of developers and replace them with a non-deterministic, sometimes inaccurate, next word predictor. Instead of keeping roles and using the "AI" tools to augment and grow their businesses to new heights, the accountants took over and decided cost savings were more important.</p>
+
+        <p>None of this is <b>any</b> excuse to lay off software developers. Zero excuse. In fact, you need developers more than ever now to fix all the tech debt, impending disaster and security issues vibe coders, like Galen, have likely unleashed on the world. We either have an intervention and try fix it now, or we end up in an Idiocracy movie type timeline where nobody knows how anything works anymore. Only in this case, the only solution will be to hire (forcefully retired) developers back and revert the code to 2022 (or thereabouts) before AI mass contributions. And that rehiring will be at a <i>premium</i>.</p>
+
+
+        <h2>To developers caught up in the mass AI hype and layoffs</h2>
+
+        <p><i>It's time for revenge</i>. Rally together and write individual, much better quality  competing products against the companies that laid you off. If you get asked to come back to a company to fix their slop, increase your hourly rate. They will pay for their hubris.</p>
+
+
+        <h2>To users of software products and services</h2>
+
+        <p>Check the news for big companies that have done recent mass AI layoffs of developers. Avoid these companies like the plague as their reputation and products will soon suffer disasters, including to your data privacy.</p>
+
+
+        <h2>To those vibe coders (sloppers) and AI tech bros, AI hype promoters and CEOs that insist on destroying civilisation as we know it</h2>
+        <p>One day your shenanigans will be discovered and you will probably be rounded up by the survivers of the AI nuclear holocaust or robot wars and sent to some place called <b>Hadante</b> for punishment. There you will drink all the slop you can handle for the rest of your life.</p>
+
+        <img src="slop.jpg" width="640" height="320">
+    </body>
+</html>
