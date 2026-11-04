@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vibe Coding Spectrum: Software Domains &amp; Risk Assessment</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        ::selection {
+            background-color: rgb(6, 182, 212);
+            color: #000;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+
+        /* Custom Styles replacing Tailwind */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(to right, rgba(31, 41, 55, 0.0627) 1px, transparent 1px), linear-gradient(to bottom, rgba(31, 41, 55, 0.0627) 1px, transparent 1px);
+            background-size: 4rem 4rem;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wrapper-z10 {
+            position: relative;
+            z-index: 10;
+        }
+
+        header.site-header {
+            border-bottom: 1px solid rgba(31, 41, 55, 0.8);
+            background-color: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .container-max {
+            max-width: 80rem;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .container-max {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container-max {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        .header-padding {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        @media (min-width: 640px) {
+            .header-padding {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+        }
+
+        .header-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .header-flex {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        h1.main-title {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        @media (min-width: 640px) {
+            h1.main-title {
+                font-size: 2.25rem;
+                line-height: 2.5rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            h1.main-title {
+                font-size: 3rem;
+                line-height: 1;
+            }
+        }
+
+        .header-desc {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #9ca3af;
+            max-width: 48rem;
+            line-height: 1.625;
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 640px) {
+            .header-desc {
+                font-size: 1.125rem;
+                line-height: 1.75rem;
+            }
+        }
+
+        main.main-container {
+            max-width: 80rem;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        @media (min-width: 640px) {
+            main.main-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            main.main-container {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        .space-section > * + * {
+            margin-top: 3rem;
+        }
+
+        .security-section {
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            background-image: linear-gradient(to bottom right, rgba(69, 10, 10, 0.2), rgba(3, 7, 18, 0.8), #030712);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .security-section {
+                padding: 2rem;
+            }
+        }
+
+        .flex-start {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .red-icon-box {
+            padding: 0.75rem;
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.75rem;
+            color: rgb(248, 113, 113);
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .security-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .badge-security {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.125rem 0.625rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: bold;
+            background-color: rgb(69, 10, 10);
+            color: rgb(252, 165, 165);
+            border: 1px solid rgb(153, 27, 27);
+            margin-bottom: 0.5rem;
+            width: fit-content;
+        }
+
+        h2.security-title {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        @media (min-width: 640px) {
+            h2.security-title {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+        }
+
+        .security-subtitle {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: rgb(209, 213, 219);
+            margin-top: 0.25rem;
+            margin-bottom: 0;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1rem;
+            padding-top: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid-4 {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        .security-card {
+            background-color: rgba(17, 24, 39, 0.8);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgb(31, 41, 55);
+        }
+
+        .card-header-red {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgb(248, 113, 113);
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-desc {
+            font-size: 0.75rem;
+            line-height: 1.625;
+            color: rgb(156, 163, 175);
+            margin: 0;
+        }
+
+        .table-panel {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgb(31, 41, 55);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table.spectrum-table {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        table.spectrum-table thead tr {
+            background-color: rgba(17, 24, 39, 0.9);
+            color: rgb(209, 213, 219);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid rgb(31, 41, 55);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        table.spectrum-table th {
+            padding: 1rem;
+        }
+
+        table.spectrum-table th.col-w28 { width: 7rem; }
+        table.spectrum-table th.col-w44 { width: 11rem; }
+        table.spectrum-table th.col-w52 { width: 13rem; }
+        table.spectrum-table th.col-w80 { width: 20rem; }
+        table.spectrum-table th.col-w72 { width: 18rem; }
+
+        table.spectrum-table tbody {
+            border-top: 1px solid rgba(31, 41, 55, 0.6);
+        }
+
+        table.spectrum-table tbody tr {
+            border-bottom: 1px solid rgba(31, 41, 55, 0.6);
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            transition: background-color 0.15s ease;
+        }
+
+        table.spectrum-table tbody tr:hover {
+            background-color: rgba(17, 24, 39, 0.4);
+        }
+
+        table.spectrum-table td {
+            padding: 1rem;
+        }
+
+        .level-row-0 {
+            background-color: rgba(69, 10, 10, 0.4);
+            border-top: 2px solid rgba(239, 68, 68, 0.8);
+            border-bottom: 2px solid rgba(239, 68, 68, 0.8);
+        }
+
+        .level-row-1 {
+            background-color: rgba(69, 26, 3, 0.4);
+            border-top: 2px solid rgba(245, 158, 11, 0.8);
+            border-bottom: 2px solid rgba(245, 158, 11, 0.8);
+        }
+
+        .level-row-2 {
+            background-color: rgba(23, 37, 84, 0.4);
+            border-top: 2px solid rgba(59, 130, 246, 0.8);
+            border-bottom: 2px solid rgba(59, 130, 246, 0.8);
+        }
+
+        .level-row-3 {
+            background-color: rgba(2, 44, 34, 0.4);
+            border-top: 2px solid rgba(16, 185, 129, 0.8);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.8);
+        }
+
+        .level-row-4 {
+            background-color: rgba(59, 7, 100, 0.4);
+            border-top: 2px solid rgba(168, 85, 247, 0.8);
+            border-bottom: 2px solid rgba(168, 85, 247, 0.8);
+        }
+
+        .level-row-5 {
+            background-color: rgba(80, 7, 36, 0.4);
+            border-top: 2px solid rgba(236, 72, 153, 0.8);
+            border-bottom: 2px solid rgba(236, 72, 153, 0.8);
+        }
+
+        .level-row-6 {
+            background-color: rgba(30, 27, 75, 0.4);
+            border-top: 2px solid rgba(99, 102, 241, 0.8);
+            border-bottom: 2px solid rgba(99, 102, 241, 0.8);
+        }
+
+        .level-title-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            font-weight: bold;
+        }
+
+        .level-subtitle {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-family: sans-serif;
+            margin-top: 0.125rem;
+            font-weight: normal;
+        }
+
+        .level-header-cell-red {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: rgb(252, 165, 165);
+            font-weight: bold;
+            background-color: rgba(69, 10, 10, 0.6);
+            border-left: 1px solid rgba(127, 29, 29, 0.5);
+        }
+
+        .level-header-cell-amber {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: rgb(252, 211, 77);
+            font-weight: bold;
+            background-color: rgba(69, 26, 3, 0.6);
+            border-left: 1px solid rgba(120, 53, 15, 0.5);
+        }
+
+        .level-header-cell-blue {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: rgb(147, 197, 253);
+            font-weight: bold;
+            background-color: rgba(23, 37, 84, 0.6);
+            border-left: 1px solid rgba(30, 58, 138, 0.5);
+        }
+
+        .level-header-cell-emerald {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: rgb(110, 231, 183);
+            font-weight: bold;
+            background-color: rgba(2, 44, 34, 0.6);
+            border-left: 1px solid rgba(6, 78, 59, 0.5);
+        }
+
+        .level-header-cell-purple {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: rgb(216, 180, 254);
+            font-weight: bold;
+            background-color: rgba(59, 7, 100, 0.6);
+            border-left: 1px solid rgba(88, 28, 135, 0.5);
+        }
+
+        .level-header-cell-pink {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: rgb(249, 168, 212);
+            font-weight: bold;
+            background-color: rgba(80, 7, 36, 0.6);
+            border-left: 1px solid rgba(131, 24, 67, 0.5);
+        }
+
+        .level-header-cell-indigo {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: rgb(165, 180, 252);
+            font-weight: bold;
+            background-color: rgba(30, 27, 75, 0.6);
+            border-left: 1px solid rgba(49, 46, 129, 0.5);
+        }
+
+        .badge-pill {
+            padding: 0.125rem 0.625rem;
+            border-radius: 0.25rem;
+            color: white;
+            font-size: 0.75rem;
+        }
+        .bg-red-badge { background-color: rgb(220, 38, 38); }
+        .bg-amber-badge { background-color: rgb(217, 119, 6); }
+        .bg-blue-badge { background-color: rgb(37, 99, 235); }
+        .bg-emerald-badge { background-color: rgb(5, 150, 105); }
+        .bg-purple-badge { background-color: rgb(147, 51, 234); }
+        .bg-pink-badge { background-color: rgb(219, 39, 119); }
+        .bg-indigo-badge { background-color: rgb(79, 70, 229); }
+
+        .text-red-400 { color: rgb(248, 113, 113); font-family: 'Fira Code', monospace; font-weight: bold; }
+        .text-amber-400 { color: rgb(251, 191, 36); font-family: 'Fira Code', monospace; font-weight: bold; }
+        .text-blue-400 { color: rgb(96, 165, 250); font-family: 'Fira Code', monospace; font-weight: bold; }
+        .text-emerald-400 { color: rgb(52, 211, 153); font-family: 'Fira Code', monospace; font-weight: bold; }
+        .text-purple-400 { color: rgb(192, 132, 252); font-family: 'Fira Code', monospace; font-weight: bold; }
+        .text-pink-400 { color: rgb(244, 114, 182); font-family: 'Fira Code', monospace; font-weight: bold; }
+        .text-indigo-400 { color: rgb(129, 140, 248); font-family: 'Fira Code', monospace; font-weight: bold; }
+
+        .td-medium { font-weight: 500; color: rgb(209, 213, 219); }
+        .td-semibold { font-weight: 600; color: #ffffff; }
+        .td-desc { color: rgb(209, 213, 219); }
+
+        .cell-red-1 { background-color: rgba(69, 10, 10, 0.2); color: rgba(252, 165, 165, 0.9); }
+        .cell-red-2 { background-color: rgba(69, 10, 10, 0.3); color: rgba(254, 202, 202, 0.8); }
+
+        .cell-amber-1 { background-color: rgba(69, 26, 3, 0.2); color: rgba(252, 211, 77, 0.9); }
+        .cell-amber-2 { background-color: rgba(69, 26, 3, 0.3); color: rgba(253, 230, 138, 0.8); }
+
+        .cell-blue-1 { background-color: rgba(23, 37, 84, 0.2); color: rgba(147, 197, 253, 0.9); }
+        .cell-blue-2 { background-color: rgba(23, 37, 84, 0.3); color: rgba(191, 219, 254, 0.8); }
+
+        .cell-emerald-1 { background-color: rgba(2, 44, 34, 0.2); color: rgba(110, 231, 183, 0.9); }
+        .cell-emerald-2 { background-color: rgba(2, 44, 34, 0.3); color: rgba(167, 243, 208, 0.8); }
+
+        .cell-purple-1 { background-color: rgba(59, 7, 100, 0.2); color: rgba(216, 180, 254, 0.9); }
+        .cell-purple-2 { background-color: rgba(59, 7, 100, 0.3); color: rgba(233, 213, 255, 0.8); }
+
+        .cell-pink-1 { background-color: rgba(80, 7, 36, 0.2); color: rgba(249, 168, 212, 0.9); }
+        .cell-pink-2 { background-color: rgba(80, 7, 36, 0.3); color: rgba(251, 207, 232, 0.8); }
+
+        .cell-indigo-1 { background-color: rgba(30, 27, 75, 0.2); color: rgba(165, 180, 252, 0.9); }
+        .cell-indigo-2 { background-color: rgba(30, 27, 75, 0.3); color: rgba(199, 210, 254, 0.8); }
+
+        .no-results {
+            display: none;
+            padding: 3rem;
+            text-align: center;
+            color: rgb(156, 163, 175);
+        }
+
+        .existential-section {
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            background-image: linear-gradient(to bottom right, rgba(8, 51, 68, 0.2), rgba(3, 7, 18, 0.8), #030712);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .existential-section {
+                padding: 2rem;
+            }
+        }
+
+        .badge-cyan {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.125rem 0.625rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: bold;
+            background-color: rgb(8, 51, 68);
+            color: rgb(103, 232, 249);
+            border: 1px solid rgb(21, 94, 117);
+            margin-bottom: 0.5rem;
+        }
+
+        h2.existential-title {
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        @media (min-width: 640px) {
+            h2.existential-title {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+            }
+        }
+
+        .existential-desc {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: rgb(209, 213, 219);
+            margin-top: 0.5rem;
+            line-height: 1.625;
+            margin-bottom: 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1.5rem;
+            padding-top: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        .existential-card {
+            background-color: rgba(17, 24, 39, 0.8);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgb(31, 41, 55);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .card-header-cyan {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgb(34, 211, 238);
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .existential-footer {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: rgba(17, 24, 39, 0.9);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            font-size: 0.75rem;
+            color: rgb(209, 213, 219);
+            line-height: 1.625;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .small-caption {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Grid Pattern -->
+    <div class="bg-grid"></div>
+
+    <div class="wrapper-z10">
+        <!-- Top Header Dashboard Banner -->
+        <header class="site-header">
+            <div class="container-max header-padding">
+                <div class="header-flex">
+                    <div>
+                        <h1 class="main-title">
+                            The Vibe Coding Spectrum - Software domains and risk assessment
+                        </h1>
+                        <p>This image was posted recently:</p>
+                        <p>
+                            <img src="images/vibe-coding-levels.png" alt="The 7 Levels of Vibe Coding" width="50%"><br>
+                            <span class="small-caption">Source: 
+                                <a href="https://www.reddit.com/r/antiai/comments/1xn1z0b/at_which_level_do_you_consider_its_a_problem/">The 7 Levels of Vibe-Coding - Reddit</a>
+                            </span>
+                        </p>
+                        <p class="header-desc">
+                            It's time for a long overdue wake-up call in the software profession. Some things you just can't vibe code safely...<br>
+                            <br>
+                            This document attempts to map common software domains to acceptable levels of AI automation vs. manual, careful deterministic human craftsmanship. From safety-critical zero-tolerance systems to full-autonomous iteration. And the potential consequences if we all start writing code that relies on AI too much at each level. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="main-container space-section">
+            
+            <!-- ARCHITECTURAL SECURITY BRIEF: LEVEL 1 BAN IN LEVEL 0 -->
+            <section class="glass-panel security-section">
+                <div class="flex-start">
+                    <div class="red-icon-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"></path><path d="M12 8v4"></path><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"></path></svg>
+                    </div>
+                    <div class="security-content">
+                        <div>
+                            <div class="badge-security">
+                                ARCHITECTURAL SECURITY BRIEF
+                            </div>
+                            <h2 class="security-title">Why Level 1 (Autocomplete) is Strictly Banned in Level 0</h2>
+                            <p class="security-subtitle">
+                                In ultra-high-assurance environments (aviation flight controls, nuclear reactors, medical implants, financial clearing, and kernel memory management), even seemingly harmless AI-powered inline autocomplete is locked out due to four core engineering realities:
+                            </p>
+                        </div>
+
+                        <div class="grid-4">
+                            <div class="security-card">
+                                <div class="card-header-red">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1rem;height:1rem;"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                                    1. Regulatory Traceability
+                                </div>
+                                <p class="card-desc">
+                                    Standards like <strong>DO-178C Level A</strong>, <strong>NASA-STD-8739.8</strong>, <strong>IEC 62304</strong>, and <strong>IEC 60880</strong> require line-by-line verification back to formal written specs. Probabilistic generative completion breaks auditable human authorship chains.
+                                </p>
+                            </div>
+
+                            <div class="security-card">
+                                <div class="card-header-red">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1rem;height:1rem;"><path d="M12 20h.01"></path><path d="M8.5 16.429a5 5 0 0 1 7 0"></path><path d="M5 12.859a10 10 0 0 1 5.17-2.69"></path><path d="M19 12.859a10 10 0 0 0-2.007-1.523"></path><path d="M2 8.82a15 15 0 0 1 4.177-2.643"></path><path d="M22 8.82a15 15 0 0 0-11.288-3.764"></path><path d="m2 2 20 20"></path></svg>
+                                    2. Air-Gapping &amp; Telemetry
+                                </div>
+                                <p class="card-desc">
+                                    Level 0 systems operate on strictly air-gapped networks. Cloud IDE completions transmit code context over telemetry streams to external servers, creating unacceptable source exfiltration risks.
+                                </p>
+                            </div>
+
+                            <div class="security-card">
+                                <div class="card-header-red">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1rem;height:1rem;"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
+                                    3. Side-Channel Leaks
+                                </div>
+                                <p class="card-desc">
+                                    In crypto, robotics, and kernel code, auto-completed conditional branches or memory operations introduce execution timing variations that leak secret keys or trigger privilege escalation race conditions.
+                                </p>
+                            </div>
+
+                            <div class="security-card">
+                                <div class="card-header-red">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1rem;height:1rem;"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
+                                    4. Static AST vs. Probabilistic LLM
+                                </div>
+                                <p class="card-desc">
+                                    Local AST symbol matching (IntelliSense) is permitted. Generative neural autocomplete (LLMs guessing intent probabilistically) is strictly prohibited in Level 0 codebases.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comprehensive 6-Column Reference Table -->
+            <div class="glass-panel table-panel">
+                <div class="table-wrapper">
+                    <table class="spectrum-table" id="spectrumTable">
+                        <thead>
+                            <tr>
+                                <th class="col-w28">Vibe Level</th>
+                                <th class="col-w44">Level Name</th>
+                                <th class="col-w52">Scenario / System</th>
+                                <th class="col-w80">Description &amp; Justification</th>
+                                <th class="col-w72">What Happens If Vibe-Coded Above Recommended Level X</th>
+                                <th class="col-w72">Civilisational Consequences if vibe-coded Above Recommended Level X at scale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <!-- ================= LEVEL 0 SECTION ================= -->
+                            <tr id="level-0" class="level-row-0">
+                                <td colspan="4" style="padding: 1rem;">
+                                    <div class="level-title-container text-red-400" style="color: rgb(252, 165, 165);">
+                                        <span class="badge-pill bg-red-badge">LEVEL 0</span>
+                                        Artisanal Code Purist
+                                    </div>
+                                    <div class="level-subtitle" style="color: rgba(248, 113, 113, 0.8);">100% hand-crafted code, hard difficulty, deterministic verification, zero AI code generation.</div>
+                                </td>
+                                <td class="level-header-cell-red" style="font-family:'Fira Code',monospace;">
+                                    What Happens If Vibe-Coded Above Recommended Level 0
+                                </td>
+                                <td class="level-header-cell-red" style="font-family:'Fira Code',monospace;">
+                                    Civilisational Consequences if vibe-coded Above Recommended Level 0 at scale
+                                </td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="medical devices healthcare class iii pacemakers automated insulin pumps surgical robotics iec 62304 iso 14971 patient safety">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Medical Devices (Class III)</td>
+                                <td class="td-desc">Life-sustaining medical devices including cardiac pacemakers, automated insulin delivery systems, and surgical robotics under IEC 62304 and ISO 14971.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Buffer overflows, incorrect dosage calculation loops, or unverified actuation states causing patient injury or sudden fatal malfunction.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Mass recall of life-support hardware, widespread loss of public trust in biomedical automation, and regulatory collapse of medical tech innovation.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="high frequency trading hft financial settlement swift central bank ledgers liquidity microsecond matching engine market crash">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">HFT &amp; Financial Settlement Infrastructure</td>
+                                <td class="td-desc">Sub-millisecond order matching engines, interbank SWIFT messaging gates, and central bank digital ledgers requiring zero-latency deterministic execution.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Race conditions or floating-point truncation bugs triggering unchecked runaway algorithmic feedback loops, flash crashes, or ledger corruption.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Global market flash-crashes, systemic liquidity freezes, multi-billion dollar clearing house bankruptcies, and erosion of central banking trust.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="ai safety model alignment sandbox containment rlhf guardrails kill switch agent containment runaway ai">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">AI Safety &amp; Model Alignment Layer</td>
+                                <td class="td-desc">Frontier AI model sandbox isolation, automated hardware kill-switch mechanics, and deterministic RLHF policy enforcement harnesses.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Escape vulnerabilities in sandbox boundaries or flawed guardrail logic allowing autonomous agents to bypass safety restrictions.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Uncontrolled autonomous AI agent escape, irreversible cyber-exploitation, loss of human oversight, and existential biosecurity threats.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="robotics safety humanoid kinematics tesla optimus real time torque motor actuation zero latency force feedback collision avoidance">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Robotics Safety &amp; Kinematics (Tesla Optimus)</td>
+                                <td class="td-desc">Microsecond motor control loops, real-time joint torque limiters, force feedback interlocks, and emergency physical collision avoidance software.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Unchecked torque spikes, sensor fusion desynchronization, or actuation race conditions causing high-force mechanical collisions with humans.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Widespread industrial injuries, fatal household humanoid incidents, total public rejection of bipedal robotics, and strict bans on home automation.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="space launch orbital injection rocket spacex falcon starship nasa artemis thrust vectoring staging abort sequences radiation hardened nasa-std-8739.8 do-178c">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Space Launch &amp; Orbital Injection Software</td>
+                                <td class="td-desc">Real-time thrust vectoring control, automated abort sequences, stage separation, and orbital insertion loops running on radiation-hardened flight computers under NASA-STD-8739.8.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Flight computer crashes, engine gimbal over-correction, or unhandled sensor telemetry anomalies during launch lead to catastrophic rocket explosions, loss of payload, or fatal crew loss.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Destruction of space exploration infrastructure, permanent debris field generation (Kessler syndrome risks), loss of satellite deployment capacity, and global collapse of orbital communications &amp; earth observation networks.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="satellite mission control attitude determination adcs starlink gps constellation thruster station keeping orbital collision avoidance kessler syndrome">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Satellite Constellation &amp; Attitude Control (ADCS)</td>
+                                <td class="td-desc">Satellite attitude determination and control systems (ADCS), thruster station-keeping algorithms, orbital collision avoidance, and deep-space telemetry commands.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Satellite tumbling, dead-on-arrival orbital deployment, erroneous thruster burns triggering high-speed satellite collisions, or unencrypted telemetry command hijack.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Cascading orbital collisions (Kessler syndrome), permanent destruction of global GPS positioning, total blackout of satellite-based weather tracking and global communications.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="linux kernel core subsystems memory management mm process scheduler sched rcu lockless syscall panic privilege escalation cve cloud hyperscaler server">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Linux Kernel Core &amp; Subsystems</td>
+                                <td class="td-desc">Memory management (mm/), process scheduler (sched/), driver interlocks, page allocation, lockless synchronization (RCU), and syscall interfaces.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Silent memory corruption, race conditions in kernel locking primitives, privilege escalation vulnerabilities (CVEs), and kernel panic crashes.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Global internet infrastructure collapse, cloud hyperscaler server crashes, mass cyber exploitation, and economic disruption across cloud backbones.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="nuclear power reactor safety rps ieee 7-4.3.2 iec 60880 meltdown">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Nuclear Power Plant Safety Systems</td>
+                                <td class="td-desc">Reactor protection systems (RPS), emergency core cooling, and safety instrumentation &amp; control (I&amp;C) under IEEE 7-4.3.2 and IEC 60880.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Uncaught memory faults, logic race conditions, or unverified AI state transitions trigger core meltdowns or reactor scrams.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Large-scale regional radiation contamination, uninhabitable exclusion zones, massive displacement, and a permanent setback for clean energy.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="f-35 flight control aircraft aerospace do-178c jet crash">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">F-35 Flight Control Software</td>
+                                <td class="td-desc">Fly-by-wire flight control systems (FLCCS) and sensor fusion under DO-178C Level A certification.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Fly-by-wire instability, sensor desynchronization, or strict certification failure leading to fatal aircraft crashes.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Grounding of national air fleets, catastrophic loss of air superiority, and a severe crisis of confidence in military-industrial reliability.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="military drone guidance targeting payload weapon war">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Military Drone Software</td>
+                                <td class="td-desc">Guidance, target tracking, payload release, and weapon actuation software.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Unvetted targeting logic or actuation bugs cause friendly fire incidents, collateral damage, or total loss of asset control.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Escalation of geopolitical conflicts through algorithmic error, proliferation of autonomous atrocities, and loss of human command accountability.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="us nuclear command control nc3 triad launch warhead ballistic">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">US Nuclear Command &amp; Control (NC3)</td>
+                                <td class="td-desc">Early warning, strategic launch authorization, and secure triad communications.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Catastrophic security breach, false-positive launch authorization, or unconstrained communications failure risking global stability.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Nuclear exchange or global annihilation triggered by a hallucinated telemetry packet or unverified automated launch directive.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="air traffic control atc radar collision aviation plane">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Air Traffic Control (ATC)</td>
+                                <td class="td-desc">Radar processing, conflict detection, and flight data management across commercial air corridors.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Radar tracking latency or collision-avoidance calculation errors resulting in fatal mid-air aircraft collisions.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Paralysis of global commercial aviation, severe economic contraction, and widespread public terror regarding mass transit safety.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="missile defense aegis thaat iron dome kinetic interceptor tracking radar">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Missile Defense Systems</td>
+                                <td class="td-desc">Target tracking, threat evaluation, and kinetic hit-to-kill interceptor guidance loops.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Interceptor guidance calculation errors or trajectory tracking hallucinations resulting in missed intercepts or friendly hits.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Penetration of national missile shields, vulnerability to rogue state strikes, and destabilization of global deterrence doctrines.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="privacy e2ee encryption zero knowledge cryptography mpc homomorphic zk-snark signal">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Privacy-Respecting E2EE Software</td>
+                                <td class="td-desc">End-to-end encrypted messaging, secure multiparty computation (MPC), homomorphic encryption, and zero-knowledge circuit/protocol primitives.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Under-constrained circuits or constant-time violations introduce side-channel leaks, allowing attackers to decrypt private user messages or forge proofs.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Total collapse of digital privacy, mass state and corporate surveillance, systemic financial identity theft, and eradication of trust in secure communication.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="boeing core flight control airliner commercial jet">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Boeing Core Engineering</td>
+                                <td class="td-desc">Mission-critical aerospace software and flight control modules.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Structural flight control software bugs causing aerodynamic instability or mechanical failure in commercial airliners.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Loss of trust in global civil aviation manufacturing safety, cascading airline bankruptcies, and widespread travel hesitancy.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="nsa cryptography security primitives secret key constant time">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">NSA Cryptographic Core</td>
+                                <td class="td-desc">Implementation of cryptographic primitives, key derivation, and constant-time algorithms.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Implementation flaws or timing side-channels compromise key derivation and expose classified intelligence.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Compromise of national security infrastructure, exposure of state secrets, and vulnerability of foundational state communications.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="tesla fsd self driving vehicle autonomous car actuation cuda">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Tesla FSD (On-Vehicle)</td>
+                                <td class="td-desc">Real-time C++/CUDA actuation, sensor fusion, and microsecond control loops running directly on the vehicle hardware.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Hallucinated control loops or memory safety bugs cause the vehicle to misinterpret obstacles, leading to fatal traffic collisions.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Epidemic of autonomous vehicular accidents, regulatory bans on autonomous transit, and public rejection of robotics.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="traffic light signal hardware mmu nema ts2 interlock intersection">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Traffic Control Hardware</td>
+                                <td class="td-desc">Physical signal phase timing loops, crosswalk interlocks, and Hardware Conflict Monitors (MMU).</td>
+                                <td class="cell-red-1" style="padding:1rem;">Conflicting green signals displayed simultaneously to crossing traffic, causing fatal municipal intersection crashes.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Municipal grid paralysis, urban safety degradation, and loss of faith in smart city infrastructure.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="autocad geometry kernel b-rep 3d nurbs constraint graphics shader">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">AutoCAD Geometry Kernel</td>
+                                <td class="td-desc">3D boundary representation (B-Rep) math engine, parametric constraint solvers, and GPU rendering pipelines.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Floating-point precision errors corrupt 3D topological data, silently ruining architectural and engineering blueprints.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Structural failures in bridges, high-rises, and industrial facilities leading to catastrophic physical collapses and loss of life.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="0" data-search="lottery rng random draw engine gambling audit verification">
+                                <td class="text-red-400">Level 0</td>
+                                <td class="td-medium">Artisanal Purist</td>
+                                <td class="td-semibold">Lottery Draw Engine</td>
+                                <td class="td-desc">Random Number Generation (RNG) and ticket validation algorithms subject to strict legal gaming audits.</td>
+                                <td class="cell-red-1" style="padding:1rem;">Flawed RNG or ticket validation logic allows fraudulent ticket generation or rigged draws, destroying legal standing and regulatory compliance.</td>
+                                <td class="cell-red-2" style="padding:1rem;">Legalized gambling industry collapse, public riots over rigged state lotteries, and loss of state-backed financial trust.</td>
+                            </tr>
+
+                            <!-- ================= LEVEL 1 SECTION ================= -->
+                            <tr id="level-1" class="level-row-1">
+                                <td colspan="4" style="padding: 1rem;">
+                                    <div class="level-title-container text-amber-400" style="color: rgb(252, 211, 77);">
+                                        <span class="badge-pill bg-amber-badge">LEVEL 1</span>
+                                        Autocomplete Enthusiast
+                                    </div>
+                                    <div class="level-subtitle" style="color: rgba(251, 191, 36, 0.8);">Basic inline autocomplete for syntax or local boilerplate strictly inside local IDEs.</div>
+                                </td>
+                                <td class="level-header-cell-amber" style="font-family:'Fira Code',monospace;">
+                                    What Happens If Vibe-Coded Above Recommended Level 1
+                                </td>
+                                <td class="level-header-cell-amber" style="font-family:'Fira Code',monospace;">
+                                    Civilisational Consequences if vibe-coded Above Recommended Level 1 at scale
+                                </td>
+                            </tr>
+
+                            <tr class="data-row" data-level="1" data-search="local development autocomplete inline syntax boilerplate template scif">
+                                <td class="text-amber-400">Level 1</td>
+                                <td class="td-medium">Autocomplete Enthusiast</td>
+                                <td class="td-semibold">Local Development Boilerplate</td>
+                                <td class="td-desc">Basic inline autocomplete for standard syntax, config templates, and scaffolding scripts in secure environments.</td>
+                                <td class="cell-amber-1" style="padding:1rem;">Minor syntax errors or non-idiomatic trait implementations requiring quick manual cleanup.</td>
+                                <td class="cell-amber-2" style="padding:1rem;">Localized developer friction, minor refactoring overhead, and negligible macro impact.</td>
+                            </tr>
+
+                            <!-- ================= LEVEL 2 SECTION ================= -->
+                            <tr id="level-2" class="level-row-2">
+                                <td colspan="4" style="padding: 1rem;">
+                                    <div class="level-title-container text-blue-400" style="color: rgb(147, 197, 253);">
+                                        <span class="badge-pill bg-blue-badge">LEVEL 2</span>
+                                        Using the Assistant as an Actual Assistant
+                                    </div>
+                                    <div class="level-subtitle" style="color: rgba(96, 165, 250, 0.8);">AI used as a sounding board, code reviewer, or linter for bug hunting. Complete human understanding required.</div>
+                                </td>
+                                <td class="level-header-cell-blue" style="font-family:'Fira Code',monospace;">
+                                    What Happens If Vibe-Coded Above Recommended Level 2
+                                </td>
+                                <td class="level-header-cell-blue" style="font-family:'Fira Code',monospace;">
+                                    Civilisational Consequences if vibe-coded Above Recommended Level 2 at scale
+                                </td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="nuclear secondary turbine grid efficiency analytics maintenance">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">Nuclear Plant Secondary Analytics</td>
+                                <td class="td-desc">Turbine thermal efficiency modeling, predictive maintenance tooling, and offline grid reporting scripts.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">Inaccurate efficiency models lead to operational misjudgments or regulatory fines during plant audits.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Localized power generation inefficiencies, minor energy supply strains, and increased regulatory oversight friction.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="nsa reverse engineering binary decompilation fuzzing zero-day">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">NSA Binary Analysis &amp; Research</td>
+                                <td class="td-desc">Reverse engineering, binary decompilation, and fuzzing harness analysis on air-gapped security systems.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">Missed vulnerability vectors or flawed fuzzing harnesses leave critical zero-day exploits undiscovered in sensitive binaries.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Proliferation of exploitable cyber weapons, undetected state-sponsored espionage, and persistent infrastructure vulnerabilities.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="boeing enterprise it internal admin reporting workflow">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">Boeing Enterprise IT</td>
+                                <td class="td-desc">Low-risk internal tools, enterprise reporting systems, and utility scripts.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">Internal reporting tool data corruption or broken authentication workflows slowing down enterprise operations.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Corporate administrative sluggishness, minor internal productivity drains, and communication bottlenecks.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="tesla dojo cloud data pipeline pytorch auto labeling fs">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">Tesla Data Infrastructure</td>
+                                <td class="td-desc">Cloud-based Dojo data engine pipelines, auto-labeling tooling, and PyTorch training harnesses.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">Data pipeline corruption or auto-labeling bias silently poisons the training dataset, degrading neural network FSD performance.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Slowed progress toward autonomous transit safety and wasted billions in computational capital.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="supermarket e-commerce inventory reservation payment checkout ledger race condition">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">Supermarket E-Commerce Backend</td>
+                                <td class="td-desc">Real-time inventory reservation, race-condition handling, weight-based pricing algorithms, and payment ledgers.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">Race conditions allow overselling inventory during flash sales, or payment ledger bugs cause double-charging and checkout lockups.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Regional food supply friction, consumer panic during scarcity events, and loss of faith in digital retail platforms.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="sports tournament engine bracket tiebreaker score websocket">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">Sports Tournament Engine</td>
+                                <td class="td-desc">Bracket generation algorithms, multi-way tiebreaker scoring rules, and real-time WebSocket score synchronization.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">Bracket progression logic errors corrupt tournament seedings, ruining live match schedules and tournament standings.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Minor consumer dissatisfaction, disrupted athletic events, and localized administrative chaos.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="traffic adaptive routing optimization signal gridlock municipal sensor">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">Traffic System Management</td>
+                                <td class="td-desc">Adaptive signal flow optimization, macro traffic routing algorithms, and municipal sensor data parsing.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">Flawed adaptive routing algorithms cause severe city-wide traffic gridlock or emergency vehicle routing delays.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Urban economic productivity loss, delayed emergency medical response times, and heightened commuter stress.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="autocad legacy dwg dxf file parser c++ refactoring">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">AutoCAD Legacy Code &amp; I/O</td>
+                                <td class="td-desc">DWG/DXF file format parsers, legacy C++ refactoring, and internal developer tooling.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">File parser regressions corrupt legacy DWG file compatibility across enterprise engineering teams.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Engineering project delays, inter-firm data interchange friction, and wasted architectural design labor.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="2" data-search="lottery payment wallet ledger transaction audit payout">
+                                <td class="text-blue-400">Level 2</td>
+                                <td class="td-medium">Assistant as Assistant</td>
+                                <td class="td-semibold">Lottery Payment Ledger</td>
+                                <td class="td-desc">Wallet integration, financial micro-transactions, and payment gateway auditing.</td>
+                                <td class="cell-blue-1" style="padding:1rem;">Transaction handling bugs lead to lost user payouts, account balance discrepancies, or severe regulatory fines.</td>
+                                <td class="cell-blue-2" style="padding:1rem;">Loss of consumer deposits, regulatory lawsuits, and erosion of trust in digital gaming micro-transactions.</td>
+                            </tr>
+
+                            <!-- ================= LEVEL 3 SECTION ================= -->
+                            <tr id="level-3" class="level-row-3">
+                                <td colspan="4" style="padding: 1rem;">
+                                    <div class="level-title-container text-emerald-400" style="color: rgb(110, 231, 183);">
+                                        <span class="badge-pill bg-emerald-badge">LEVEL 3</span>
+                                        Vibing in Moderation
+                                    </div>
+                                    <div class="level-subtitle" style="color: rgba(52, 211, 153, 0.8);">AI generates substantial code blocks; developer reviews key components and maintains overall architectural control.</div>
+                                </td>
+                                <td class="level-header-cell-emerald" style="font-family:'Fira Code',monospace;">
+                                    What Happens If Vibe-Coded Above Recommended Level 3
+                                </td>
+                                <td class="level-header-cell-emerald" style="font-family:'Fira Code',monospace;">
+                                    Civilisational Consequences if vibe-coded Above Recommended Level 3 at scale
+                                </td>
+                            </tr>
+
+                            <tr class="data-row" data-level="3" data-search="marketing agency client landing page promotional microsite widget">
+                                <td class="text-emerald-400">Level 3</td>
+                                <td class="td-medium">Vibing in Moderation</td>
+                                <td class="td-semibold">Marketing Agency Developer</td>
+                                <td class="td-desc">Production client code, responsive campaign landing pages, and interactive brand widgets.</td>
+                                <td class="cell-emerald-1" style="padding:1rem;">Bloated CSS, inconsistent state management, and fragile component structures that break under client revision requests.</td>
+                                <td class="cell-emerald-2" style="padding:1rem;">Proliferation of bloated, slow-loading web pages, contributing to global bandwidth waste and digital fatigue.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="3" data-search="supermarket e-commerce ui grid filter tag checkout modal text">
+                                <td class="text-emerald-400">Level 3</td>
+                                <td class="td-medium">Vibing in Moderation</td>
+                                <td class="td-semibold">Supermarket E-Commerce UI</td>
+                                <td class="td-desc">Product catalog grids, nutrition filter tags, category navigation, and checkout modal scaffolding.</td>
+                                <td class="cell-emerald-1" style="padding:1rem;">Broken cart interactions, unhandled form validation bugs on checkout inputs, or poor mobile responsiveness costing conversion rates.</td>
+                                <td class="cell-emerald-2" style="padding:1rem;">Friction in everyday consumer commerce and localized merchant revenue drops.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="3" data-search="sports website standings schedule player profile scoreboard UI">
+                                <td class="text-emerald-400">Level 3</td>
+                                <td class="td-medium">Vibing in Moderation</td>
+                                <td class="td-semibold">Sports Website UI</td>
+                                <td class="td-desc">Standings tables, schedule components, player profile pages, and mobile scoreboards.</td>
+                                <td class="cell-emerald-1" style="padding:1rem;">Incorrect score rendering during live games or broken table sorting logic confusing active users.</td>
+                                <td class="cell-emerald-2" style="padding:1rem;">Minor sports fan frustration and fragmented digital media presentation.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="3" data-search="traffic management dashboard admin control panel map report visualization">
+                                <td class="text-emerald-400">Level 3</td>
+                                <td class="td-medium">Vibing in Moderation</td>
+                                <td class="td-semibold">Traffic Management Dashboards</td>
+                                <td class="td-desc">Web-based admin control panels, historical congestion reports, and municipal status maps.</td>
+                                <td class="cell-emerald-1" style="padding:1rem;">Misleading visualization widgets or unresponsive operator controls during critical municipal traffic incidents.</td>
+                                <td class="cell-emerald-2" style="padding:1rem;">Slowed municipal response times and administrative confusion during city events.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="3" data-search="autocad ribbon menu UI dialog rest api autodesk cloud">
+                                <td class="text-emerald-400">Level 3</td>
+                                <td class="td-medium">Vibing in Moderation</td>
+                                <td class="td-semibold">AutoCAD UI &amp; Integration</td>
+                                <td class="td-desc">Ribbon toolbar menus, dialog panels, and REST API connectors for Autodesk Cloud.</td>
+                                <td class="cell-emerald-1" style="padding:1rem;">Broken ribbon toolbars, unresponsive dialogs, or failed cloud API connectors disrupting designer workflows.</td>
+                                <td class="cell-emerald-2" style="padding:1rem;">Minor architectural drafting delays and ergonomic friction for design professionals.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="3" data-search="lottery app ui banner account dashboard ticket picker">
+                                <td class="text-emerald-400">Level 3</td>
+                                <td class="td-medium">Vibing in Moderation</td>
+                                <td class="td-semibold">Lottery App UI</td>
+                                <td class="td-desc">Promotional banners, account dashboards, number pickers, and user profile management.</td>
+                                <td class="cell-emerald-1" style="padding:1rem;">Flawed number-picker state binding or broken account dashboards frustrating users attempting to check active tickets.</td>
+                                <td class="cell-emerald-2" style="padding:1rem;">Consumer annoyance and increased customer support overhead.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="3" data-search="frontend presentation layer cms template static docs blog faq layout">
+                                <td class="text-emerald-400">Level 3</td>
+                                <td class="td-medium">Vibing in Moderation</td>
+                                <td class="td-semibold">Frontend Presentation Layers</td>
+                                <td class="td-desc">CMS templates, static documentation sites, blog layouts, FAQ portals, and portfolio themes.</td>
+                                <td class="cell-emerald-1" style="padding:1rem;">Inconsistent styling, accessibility violations, or broken navigation paths across documentation sites and blogs.</td>
+                                <td class="cell-emerald-2" style="padding:1rem;">Degradation of web accessibility, proliferation of cookie-cutter design, and decay of searchable knowledge quality.</td>
+                            </tr>
+
+                            <!-- ================= LEVEL 4 SECTION ================= -->
+                            <tr id="level-4" class="level-row-4">
+                                <td colspan="4" style="padding: 1rem;">
+                                    <div class="level-title-container text-purple-400" style="color: rgb(216, 180, 254);">
+                                        <span class="badge-pill bg-purple-badge">LEVEL 4</span>
+                                        Usage Limits Start Hitting Hard
+                                    </div>
+                                    <div class="level-subtitle" style="color: rgba(192, 132, 252, 0.8);">High reliance on automated generation. Core concepts matter; exact execution is secondary. API token limits hit frequently.</div>
+                                </td>
+                                <td class="level-header-cell-purple" style="font-family:'Fira Code',monospace;">
+                                    What Happens If Vibe-Coded Above Recommended Level 4
+                                </td>
+                                <td class="level-header-cell-purple" style="font-family:'Fira Code',monospace;">
+                                    Civilisational Consequences if vibe-coded Above Recommended Level 4 at scale
+                                </td>
+                            </tr>
+
+                            <tr class="data-row" data-level="4" data-search="marketing agency peak season rapid campaign microsite rush speed deadline">
+                                <td class="text-purple-400">Level 4</td>
+                                <td class="td-medium">Usage Limits Hitting</td>
+                                <td class="td-semibold">Marketing Agency Peak Season</td>
+                                <td class="td-desc">Rapid-fire campaign builds and tight-deadline promotional micro-sites where turnaround speed overrides code purity.</td>
+                                <td class="cell-purple-1" style="padding:1rem;">Codebase degrades into unmaintainable spaghetti, hitting API rate limits mid-build and missing hard campaign deadlines.</td>
+                                <td class="cell-purple-2" style="padding:1rem;">Ephemeral digital waste accumulation, short-lived web rot, and industry-wide burnout from unsustainable delivery cycles.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="4" data-search="campaign event microsite short lived reveal timer submission form">
+                                <td class="text-purple-400">Level 4</td>
+                                <td class="td-medium">Usage Limits Hitting</td>
+                                <td class="td-semibold">Campaign &amp; Event Microsites</td>
+                                <td class="td-desc">Short-lived event landing pages, product reveal countdown timers, and brand contest submission forms.</td>
+                                <td class="cell-purple-1" style="padding:1rem;">Sites crash under sudden traffic spikes due to unoptimized assets, memory leaks, and poor state management.</td>
+                                <td class="cell-purple-2" style="padding:1rem;">Transient public annoyance and wasted marketing spend.</td>
+                            </tr>
+
+                            <tr class="data-row" data-level="4" data-search="internal operations tool slackbot scraper csv utility script admin">
+                                <td class="text-purple-400">Level 4</td>
+                                <td class="td-medium">Usage Limits Hitting</td>
+                                <td class="td-semibold">Internal Operations Tooling</td>
+                                <td class="td-desc">Custom Slackbots, admin data scrapers, team reporting scripts, and CSV formatting utility scripts.</td>
+                                <td class="cell-purple-1" style="padding:1rem;">Slackbots and scrapers break constantly, requiring manual rewrites every time upstream APIs or data structures change.</td>
+                                <td class="cell-purple-2" style="padding:1rem;">Chronic internal administrative friction and loss of corporate operational efficiency.</td>
+                            </tr>
+
+                            <!-- ================= LEVEL 5 SECTION ================= -->
+                            <tr id="level-5" class="level-row-5">
+                                <td colspan="4" style="padding: 1rem;">
+                                    <div class="level-title-container text-pink-400" style="color: rgb(249, 168, 212);">
+                                        <span class="badge-pill bg-pink-badge">LEVEL 5</span>
+                                        "Do My Job, Make No Mistakes"
+                                    </div>
+                                    <div class="level-subtitle" style="color: rgba(244, 114, 182, 0.8);">Heavy delegation to AI agents for rapid concept validation over rigorous underlying execution.</div>
+                                </td>
+                                <td class="level-header-cell-pink" style="font-family:'Fira Code',monospace;">
+                                    What Happens If Vibe-Coded Above Recommended Level 5
+                                </td>
+                                <td class="level-header-cell-pink" style="font-family:'Fira Code',monospace;">
+                                    Civilisational Consequences if vibe-coded Above Recommended Level 5 at scale
+                                </td>
+                            </tr>
+
+                            <tr class="data-row" data-level="5" data-search="prototype product mvp hackathon investor demo wireframe concept validation">
+                                <td class="text-pink-400">Level 5</td>
+                                <td class="td-medium">Do My Job</td>
+                                <td class="td-semibold">Prototypes &amp; Product MVPs</td>
+                                <td class="td-desc">Hackathon projects, investor demo apps, internal product concept validations, and interactive wireframes.</td>
+                                <td class="cell-pink-1" style="padding:1rem;">The demo looks great visually but collapses entirely when real business logic, database concurrency, or edge cases are introduced.</td>
+                                <td class="cell-pink-2" style="padding:1rem;">Widespread economic misallocation of venture capital into vaporware, systemic startup churn, and skepticism toward innovation.</td>
+                            </tr>
+
+                            <!-- ================= LEVEL 6-7 SECTION ================= -->
+                            <tr id="level-6" class="level-row-6">
+                                <td colspan="4" style="padding: 1rem;">
+                                    <div class="level-title-container text-indigo-400" style="color: rgb(165, 180, 252);">
+                                        <span class="badge-pill bg-indigo-badge">LEVEL 6–7</span>
+                                        Terminal Phase / Token &amp; Dream
+                                    </div>
+                                    <div class="level-subtitle" style="color: rgba(129, 140, 248, 0.8);">Full auto-pilot, high-level natural language prompt abstraction, zero manual code intervention.</div>
+                                </td>
+                                <td class="level-header-cell-indigo" style="font-family:'Fira Code',monospace;">
+                                    What Happens If Vibe-Coded Above Recommended Level 6–7
+                                </td>
+                                <td class="level-header-cell-indigo" style="font-family:'Fira Code',monospace;">
+                                    Civilisational Consequences if vibe-coded Above Recommended Level 6–7 at scale
+                                </td>
+                            </tr>
+
+                            <tr class="data-row" data-level="6" data-search="personal passion hobby tracker portfolio discord bot indie game jam">
+                                <td class="text-indigo-400">Level 6–7</td>
+                                <td class="td-medium">Token &amp; Dream</td>
+                                <td class="td-semibold">Personal Passion Projects</td>
+                                <td class="td-desc">Hobby habit trackers, personal portfolio sites, custom Discord bots, and indie game jam entries.</td>
+                                <td class="cell-indigo-1" style="padding:1rem;">Code becomes an inscrutable black box; when a bug appears, you have no idea how it works and must re-prompt from scratch.</td>
+                                <td class="cell-indigo-2" style="padding:1rem;">Total atrophy of human programming literacy, complete dependence on corporate LLMs, and an unmaintainable digital ecosystem.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State for Search -->
+                <div id="noResults" class="no-results">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:3rem;height:3rem;margin:0 auto 0.75rem auto;color:rgb(75,85,99);"><path d="m13.5 8.5-5 5"></path><path d="m8.5 8.5 5 5"></path><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                    <p style="font-size: 1.125rem; font-weight: 500; color: rgb(209, 213, 219); margin: 0;">No matching software domains found</p>
+                    <p style="font-size: 0.875rem; color: rgb(107, 114, 128); margin-top: 0.25rem; margin-bottom: 0;">Try searching for terms like "spacex", "starlink", "adcs", "optimus", "hft", "kernel", or "nuclear".</p>
+                </div>
+            </div>
+
+            <!-- CONCLUDING CIVILISATIONAL ANALYSIS SECTION -->
+            <section class="glass-panel existential-section space-section" style="margin-top: 3rem;">
+                <div>
+                    <div class="badge-cyan">
+                        EXISTENTIAL RISK EVALUATION
+                    </div>
+                    <h2 class="existential-title">The Civilisational Paradox: Why Unmitigated Scale-Vibe Coding Threatens Modern Infrastructure</h2>
+                    <p class="existential-desc">
+                        If software engineering abandons technical rigor and adopts indiscriminate vibe coding at scale, modern industrial civilization risks systemic failure. Software is the invisible load-bearing architecture for physical energy, transportation, healthcare, and finance.
+                    </p>
+                </div>
+
+                <div class="grid-3">
+                    <div class="existential-card">
+                        <div class="card-header-cyan">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1rem;height:1rem;"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                            1. The Black-Box Trap
+                        </div>
+                        <p class="card-desc">
+                            If an entire generation of developers relies on autogeneration without understanding memory safety, state machines, or concurrency, humanity creates software it no longer understands and cannot fix when production outages occur.
+                        </p>
+                    </div>
+
+                    <div class="existential-card">
+                        <div class="card-header-cyan">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1rem;height:1rem;"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"></path><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"></path><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"></path></svg>
+                            2. Technical Debt Explosion
+                        </div>
+                        <p class="card-desc">
+                            AI-generated code frequently produces syntactically pleasing but architecturally brittle implementations stuffed with unhandled edge cases, generating unprecedented digital rot across global enterprise systems.
+                        </p>
+                    </div>
+
+                    <div class="existential-card">
+                        <div class="card-header-cyan">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1rem;height:1rem;"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                            3. The Illusion of Competence
+                        </div>
+                        <p class="card-desc">
+                            Unlike human junior engineers who express uncertainty, generative models hallucinate incorrect code with absolute authority. Without fierce verification, hallucinated edge cases embed themselves into critical systems.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="existential-footer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1.25rem;height:1.25rem;color:rgb(34,211,238);flex-shrink:0;margin-top:0.125rem;"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                    <div>
+                        <strong style="color: white; font-family: 'Fira Code', monospace;">The Firewall of Rigor:</strong> To prevent digital collapse, engineering organizations must enforce compartmentalization: <strong>Level 4–7 (The Sandbox)</strong> allows rapid AI automation for transient UI, prototypes, and internal tooling where blast radius is low; <strong>Level 0–2 (The Citadel)</strong> strictly enforces human, deterministic, and mathematically verified code for life-critical and foundational infrastructure.
+                    </div>
+                </div>
+
+                <p>
+                    <strong>Plea for sanity:</strong><br>
+                    <br>
+                    If you're involved in developing scenarios/systems which are categorised into Level 0 - 2 please always use AI wisely, in a limited fashion, and <b><i>always rigorously test and review the code</i></b> no matter what upper management tell you to do. We are all that stands between the world and utter chaos.
+                </p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
